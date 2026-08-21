@@ -12,7 +12,16 @@ engineering credit belongs to the engineers who wrote it.
 Everything here is written against the deployed on-chain source, so a reader with no access
 to the private repository can check any claim in it.
 
-**[▶ Interactive architecture map](https://bennettdavisv2.github.io/canopy-architecture/)**
+<a href="https://bennettdavisv2.github.io/canopy-architecture/">
+  <img src="media/kbw-poster.jpg" width="100%" alt="Presenting Canopy at Korea Blockchain Week 2025 — click to watch"/>
+</a>
+
+<p align="center">
+  <b><a href="https://bennettdavisv2.github.io/canopy-architecture/">▶ Watch the pitch</a></b>
+  &nbsp;·&nbsp; Korea Blockchain Week 2025 &nbsp;·&nbsp; 1 min
+  &nbsp;&nbsp;|&nbsp;&nbsp;
+  <a href="https://bennettdavisv2.github.io/canopy-architecture/">Interactive architecture map</a>
+</p>
 
 ---
 

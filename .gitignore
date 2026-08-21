@@ -1,9 +1,6 @@
 # Fetched Move source — publicly readable but not openly licensed; never redistributed
 canopy-source/
 
-# Large media hosted elsewhere
-media/
-
 __pycache__/
 *.pyc
 .DS_Store
