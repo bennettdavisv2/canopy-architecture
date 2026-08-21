@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Canopy — a yield-aggregation protocol on the Movement network. Interactive map of the deployed Move packages, each linking to verified on-chain source.">
+<meta property="og:title" content="Canopy Protocol">
+<meta property="og:description" content="Interactive map of Canopy's deployed Move packages, each linking to its verified on-chain source.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13'>%F0%9F%8C%B2</text></svg>">
+<title>Canopy Protocol</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&display=swap">
+
+<style>
+:root{
+  --bg:#F1F4F2; --surface:#FBFCFB; --surface-2:#E9EEEB;
+  --ink:#141D19; --ink-2:#3A4842; --muted:#5E6C66;
+  --rule:#D3DBD6; --rule-strong:#B9C4BE;
+  --sel:#0F5C4A; --sel-bg:#E4F0EB;
+  --link:#0F5C4A;
+  --shadow:0 1px 2px rgba(20,29,25,.05),0 10px 30px -18px rgba(20,29,25,.28);
+  --maxw:74rem; --prose:64ch;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1412; --surface:#151D1A; --surface-2:#1B2521;
+    --ink:#E3EAE6; --ink-2:#B7C4BE; --muted:#8C9C95;
+    --rule:#243029; --rule-strong:#33443C;
+    --sel:#5CD3AE; --sel-bg:#15332C;
+    --link:#5CD3AE;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -18px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1412; --surface:#151D1A; --surface-2:#1B2521;
+  --ink:#E3EAE6; --ink-2:#B7C4BE; --muted:#8C9C95;
+  --rule:#243029; --rule-strong:#33443C;
+  --sel:#5CD3AE; --sel-bg:#15332C;
+  --link:#5CD3AE;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -18px rgba(0,0,0,.8);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;
+  font-size:17px;line-height:1.68;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(1.25rem,5vw,3rem)}
+p{max-width:var(--prose)}
+a{color:var(--link);text-decoration:none;border-bottom:1px solid var(--rule-strong)}
+a{border-bottom-color:color-mix(in srgb,var(--link) 35%,transparent)}
+a:hover{border-bottom-color:var(--link)}
+a:focus-visible{outline:2px solid var(--sel);outline-offset:3px;border-radius:2px}
+code{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.87em;background:var(--surface-2);padding:.1em .35em;border-radius:3px;color:var(--ink)}
+
+/* masthead */
+.masthead{padding:clamp(3.5rem,9vw,6.5rem) 0 clamp(2rem,4vw,3rem)}
+.eyebrow{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 1.6rem}
+h1{font-family:"IBM Plex Serif",ui-serif,Georgia,serif;font-weight:600;font-size:clamp(2.8rem,8vw,5rem);line-height:.98;letter-spacing:-.026em;margin:0 0 1.3rem}
+.standfirst{font-size:clamp(1.1rem,2.2vw,1.38rem);line-height:1.5;color:var(--ink-2);max-width:42ch;margin:0 0 2rem;text-wrap:balance}
+.byline{display:flex;flex-wrap:wrap;gap:.4rem 1.75rem;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.77rem;color:var(--muted);padding-top:1.4rem;border-top:1px solid var(--rule)}
+.byline b{color:var(--ink-2);font-weight:500}
+
+/* sections */
+section{padding:0 0 clamp(3.5rem,8vw,5.5rem)}
+.label{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 1rem}
+h2{font-family:"IBM Plex Serif",ui-serif,Georgia,serif;font-weight:600;font-size:clamp(1.5rem,3.2vw,2rem);letter-spacing:-.016em;margin:0 0 1.3rem;line-height:1.18;max-width:24ch;text-wrap:balance}
+
+/* ---------- explorer ---------- */
+.explorer{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:1.25rem;margin-top:1.75rem;align-items:start}
+.stack{display:flex;flex-direction:column;gap:1rem}
+.tier{display:flex;flex-direction:column;gap:.45rem}
+.tier-h{display:flex;align-items:baseline;gap:.6rem;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.tier-h .ln{flex:1;height:1px;background:var(--rule)}
+.nodes{display:grid;grid-template-columns:repeat(auto-fill,minmax(10.5rem,1fr));gap:.45rem}
+
+.node{
+  display:flex;align-items:center;gap:.55rem;width:100%;
+  padding:.62rem .7rem;text-align:left;cursor:pointer;
+  background:var(--surface);border:1px solid var(--rule);
+  font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.775rem;
+  color:var(--ink);border-radius:0;
+  transition:background .12s ease,border-color .12s ease,transform .12s ease;
+}
+.node:hover{border-color:var(--rule-strong);transform:translateY(-1px)}
+.node:focus-visible{outline:2px solid var(--sel);outline-offset:2px}
+.node .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.node[aria-pressed="true"]{background:var(--sel-bg);border-color:var(--sel);box-shadow:inset 0 0 0 1px var(--sel)}
+.node.rel{border-color:var(--sel);background:var(--sel-bg)}
+
+/* detail */
+.detail{
+  position:sticky;top:1.25rem;background:var(--surface);
+  border:1px solid var(--rule);box-shadow:var(--shadow);
+  padding:1.35rem 1.4rem;display:flex;flex-direction:column;gap:1rem;
+}
+.d-top{display:flex;flex-direction:column;gap:.4rem}
+.d-kind{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.d-name{font-family:"IBM Plex Serif",ui-serif,Georgia,serif;font-size:1.4rem;font-weight:600;line-height:1.15;margin:0;letter-spacing:-.01em}
+.d-desc{font-size:.93rem;line-height:1.58;color:var(--ink-2);margin:0;max-width:none}
+.d-sub{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0;padding-top:.9rem;border-top:1px solid var(--rule)}
+.mods{display:flex;flex-direction:column;gap:.3rem}
+.mod{
+  display:flex;align-items:center;gap:.5rem;padding:.48rem .6rem;
+  background:var(--bg);border:1px solid var(--rule);
+  font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.775rem;color:var(--ink);
+}
+.mod:hover{border-color:var(--sel)}
+.mod .arw{margin-left:auto;color:var(--muted);font-size:.9rem;line-height:1}
+.mod:hover .arw{color:var(--sel)}
+.addr{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.7rem;
+  color:var(--muted);word-break:break-all;line-height:1.5;
+  background:var(--bg);border:1px solid var(--rule);padding:.5rem .6rem;
+}
+a.mod,a.addr{border-bottom:0}
+.d-links{display:flex;flex-wrap:wrap;gap:.5rem 1.25rem;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.74rem}
+
+.nojs{background:var(--surface);border:1px solid var(--rule);padding:1.2rem 1.3rem}
+.nojs p{margin:0 0 .8rem;font-size:.92rem;color:var(--ink-2)}
+.nojs-list{margin:0;padding-left:1.1rem;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.78rem;line-height:1.9;color:var(--muted)}
+.hint{font-size:.85rem;color:var(--muted);margin:.9rem 0 0;max-width:var(--prose)}
+
+/* flow */
+.flow{display:flex;flex-direction:column;margin-top:1.6rem}
+.step{display:grid;grid-template-columns:2.4rem 1fr;gap:1.1rem;padding:1rem 0;border-top:1px solid var(--rule);align-items:baseline}
+.step:last-child{border-bottom:1px solid var(--rule)}
+.step .i{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.78rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.step .t{font-size:.95rem;color:var(--ink-2);max-width:58ch}
+.step .t b{color:var(--ink);font-weight:600}
+
+/* audits */
+.audits{border:1px solid var(--rule);background:var(--surface);overflow-x:auto;margin-top:1.6rem}
+.arow{display:grid;grid-template-columns:6rem 1fr 6.5rem;gap:1rem;padding:.68rem 1.1rem;border-bottom:1px solid var(--rule);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.78rem;align-items:center;min-width:30rem}
+.arow:last-child{border-bottom:0}
+.arow .dt{color:var(--muted);font-variant-numeric:tabular-nums}
+.arow .fm{color:var(--ink-2);text-align:right}
+.arow.hd{background:var(--surface-2)}
+.arow.hd span{font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+
+footer{border-top:1px solid var(--rule);padding:2.25rem 0 4.5rem;font-size:.84rem;color:var(--muted)}
+footer p{max-width:var(--prose);margin:0}
+footer p + p{margin-top:.8rem}
+.foot-links{display:flex;flex-wrap:wrap;gap:.6rem 1.75rem;margin-bottom:1.5rem;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.79rem}
+
+@media (max-width:60rem){
+  .explorer{grid-template-columns:1fr}
+  .detail{position:static}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}.node:hover{transform:none}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Movement network · Move · DeFi</p>
+    <h1>Canopy</h1>
+    <p class="standfirst">
+      A yield-aggregation protocol. Vaults take a single deposit and route it across lending
+      venues through composable strategy packages.
+    </p>
+    <p class="byline">
+      <span><b>Bennett Davis</b></span>
+      <span>Founder &amp; CEO</span>
+      <span>2024 — acquired 2026</span>
+    </p>
+  </header>
+
+  <section>
+    <p class="label">The stack</p>
+    <h2>Explore the deployed system</h2>
+    <p>
+      Every package below is live on Movement mainnet and was published with its source
+      attached. Select a component to see what it does, its address, and the modules that
+      implement it — each one linking to its verified source on the explorer.
+    </p>
+
+    <div class="explorer">
+      <div class="stack" id="stack"></div>
+      <noscript>
+        <div class="nojs">
+          <p><b>Interactive map requires JavaScript.</b> Direct links to every deployed package:</p>
+          <ul class="nojs-list">
+            <li><a href="https://explorer.movementnetwork.xyz/account/0x717b417949cd5bfa6dc02822eacb727d820de2741f6ea90bf16be6c0ed46ff4b">SatayRouter</a> — Router</li>
+            <li><a href="https://explorer.movementnetwork.xyz/account/0xb10bd32b3979c9d04272c769d9ef52afbc6edc4bf03982a9e326b96ac25e7f2d">Satay</a> — Core</li>
+            <li><a href="https://explorer.movementnetwork.xyz/account/0x5d2b6a8b6478d86f62c9d3378e2a1fa265e85e69046946632d1fecae1940e851">EchelonSimple</a> — Echelon lend</li>
+            <li><a href="https://explorer.movementnetwork.xyz/account/0xd7c7b27e361434e18d2410fd02f7140a8c10d174c9be0efd5324578d243953bd">MovepositionSimple</a> — MovePosition lend</li>
+            <li><a href="https://explorer.movementnetwork.xyz/account/0xad1b34939f164ec6f6c0157da3a30bf9e5d408250978691872a79aa584852b85">LayerBankSimple</a> — LayerBank lend</li>
+            <li><a href="https://explorer.movementnetwork.xyz/account/0x133b23036f4ac78279fd4cc75b798ccfe2d3c002585049d7483230653b924b7d">MeridianRewards</a> — Meridian rewards</li>
+            <li><a href="https://explorer.movementnetwork.xyz/account/0xa9cebc4e3a52f186c831666a6e2f0475d32ebd23244b207ffde0ce06d9813414">PlaceholderSimple</a> — Placeholder</li>
+            <li><a href="https://explorer.movementnetwork.xyz/account/0x2859e4b5922d5c6746e51387eea923cd8630ecba132e3eafdf6924269b0dc319">EchelonBlock</a> — Echelon</li>
+            <li><a href="https://explorer.movementnetwork.xyz/account/0xf35c3fb25b800e4e25b71e255bd3194812d08a0044b45373c53798280db58dca">MovePositionBlock</a> — MovePosition</li>
+            <li><a href="https://explorer.movementnetwork.xyz/account/0x61a67557042baa9fd928e874b84ed53b5de73a0f5474fd278e4d73393125d32e">LayerBankBlock</a> — LayerBank</li>
+            <li><a href="https://explorer.movementnetwork.xyz/account/0x04d59ca485d294ce6645e456a7ec4ddf1363c844365e4a568ff9211c7e21c8b3">MeridianFarmingBlock</a> — Meridian farming</li>
+            <li><a href="https://explorer.movementnetwork.xyz/account/0xac80083d55f39c8a62eea93d3877b2f5fd40ef469ae54910ff27ff49dd42c8a6">LayerBankAirdropBlock</a> — LayerBank airdrop</li>
+            <li><a href="https://explorer.movementnetwork.xyz/account/0xf23a6e822ee3605642d7ce720f2dc0f8269c199da94d93136f56089bb005f309">PlaceholderBlock</a> — Placeholder</li>
+            <li><a href="https://explorer.movementnetwork.xyz/account/0x113a1769acc5ce21b5ece6f9533eef6dd34c758911fa5235124c87ff1298633b">MultiRewardsAptos</a> — Rewards core</li>
+            <li><a href="https://explorer.movementnetwork.xyz/account/0x265d62018bb6ec05859cdf5520cfc1efa8e84a4f9a853c66f139a2184d367be4">MultiRewardsBatcher</a> — Batcher</li>
+            <li><a href="https://explorer.movementnetwork.xyz/account/0x2a6b1dd5556386991fc6f4fa140ae65a6fc90414acec00e7f0254e98929ec140">StdBatcher</a> — Std batcher</li>
+            <li><a href="https://explorer.movementnetwork.xyz/account/0x93c6d4852a37be13ec1487a60d32433e396b048ce634b4e8b9f60ff0dac365d2">CanopyHelpers</a> — Helpers</li>
+            <li><a href="https://explorer.movementnetwork.xyz/account/0x707462571715301b063d79c2cdb57c3bd1cfe2189889793b00077ceed86e0219">CanopyViews</a> — Views</li>
+          </ul>
+        </div>
+      </noscript>
+      <div class="detail" id="detail" aria-live="polite"></div>
+    </div>
+
+  </section>
+
+  <section>
+    <p class="label">Deposit path</p>
+    <h2>How a deposit reaches a lending market</h2>
+    <div class="flow">
+      <div class="step"><span class="i">01</span><span class="t">The router takes the deposit and wraps it in a transfer type that records the depositor.</span></div>
+      <div class="step"><span class="i">02</span><span class="t">The vault prices shares against its own accounting, credits idle balance, and mints vault shares back to that depositor.</span></div>
+      <div class="step"><span class="i">03</span><span class="t">Idle funds are split across the vault's strategies <b>pro rata by capacity</b>, so one deposit can land in several venues at once.</span></div>
+      <div class="step"><span class="i">04</span><span class="t">Each strategy draws its allocation as <b>debt against the vault</b> and issues debt shares, keeping the vault's claim on deployed funds explicit.</span></div>
+      <div class="step"><span class="i">05</span><span class="t">The strategy hands the assets to its venue adapter, which unwraps them and supplies the external lending market.</span></div>
+    </div>
+    <p style="margin-top:1.4rem">
+      Value crossing a package boundary is wrapped in a type the language will not let a
+      contract store, copy, or discard — so an intermediate step physically cannot retain
+      funds. It must pass them on, and the compiler rejects any path that doesn't.
+    </p>
+  </section>
+
+  <section>
+    <p class="label">Vault accounting</p>
+    <h2>Share price is computed from internal state</h2>
+    <p>
+      A vault values itself as idle balance plus deployed debt, rather than by reading its own
+      token balance. Assets sent directly to a vault therefore do not move the share price;
+      only accounted inflows do. Resyncing the two is a privileged operation.
+    </p>
+    <p>
+      Harvested profit is released on a linear schedule instead of landing in one step, so a
+      deposit arriving immediately after a harvest cannot capture yield it wasn't present for.
+      Withdrawals draw from idle funds first and touch a venue only for the shortfall.
+    </p>
+  </section>
+
+  <section>
+    <p class="label">Security review</p>
+    <h2>Six audits across three firms</h2>
+    <p>
+      Reviewed continuously from first deployment through the rewards system, with core
+      accounting audited twice and the cross-chain campaign reviewed independently by two
+      firms.
+    </p>
+    <div class="audits">
+      <div class="arow hd"><span>Date</span><span>Scope</span><span>Firm</span></div>
+      <div class="arow"><span class="dt">2024-06</span><span>Asset management contracts</span><span class="fm">MoveBit</span></div>
+      <div class="arow"><span class="dt">2024-12</span><span>Core strategies</span><span class="fm">Halborn</span></div>
+      <div class="arow"><span class="dt">2025-02</span><span>Core strategies — re-audit</span><span class="fm">Halborn</span></div>
+      <div class="arow"><span class="dt">2025-02</span><span>Cornucopia campaign</span><span class="fm">MoveBit</span></div>
+      <div class="arow"><span class="dt">2025-03</span><span>Cornucopia campaign</span><span class="fm">OtterSec</span></div>
+      <div class="arow"><span class="dt">2025-07</span><span>Autocompounding rewards</span><span class="fm">Halborn</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-links">
+      <a href="https://github.com/bennettdavisv2/canopy-architecture/blob/main/docs/architecture.md">Architecture notes</a>
+      <a href="https://github.com/bennettdavisv2/canopy-architecture/blob/main/docs/reference.md">Deployment reference</a>
+      <a href="https://github.com/bennettdavisv2/canopy-architecture/tree/main/audits">Audit reports</a>
+      <a href="https://docs.canopyhub.xyz">Protocol docs</a>
+    </div>
+    <p>
+      Documented from verified Move source on Movement mainnet, the public
+      <code>canopy-sdk</code> deployment registry, and the published audit reports.
+    </p>
+    <p>
+      Canopy's contracts were written by the protocol engineering team. Contract source carries
+      no license and is not redistributed here.
+    </p>
+  </footer>
+
+</div>
+
+<script>
+const EXPLORER = "https://explorer.movementnetwork.xyz";
+const FULLNODE = "https://mainnet.movementnetwork.xyz/v1";
+
+const TIERS = [
+  {id:"router",     name:"Router"},
+  {id:"core",       name:"Core"},
+  {id:"strategies", name:"Strategies"},
+  {id:"blocks",     name:"Venue adapters"},
+  {id:"rewards",    name:"Rewards"},
+  {id:"periphery",  name:"Views & helpers"}
+];
+
+const C = [
+  {id:"router",tier:"router",name:"SatayRouter",label:"Router",
+   addr:"0x717b417949cd5bfa6dc02822eacb727d820de2741f6ea90bf16be6c0ed46ff4b",
+   mods:["router","deposit","withdraw","harvest","auth"],
+   desc:"Entry point for deposits and withdrawals. Prices shares, applies slippage limits, and allocates idle funds across a vault's strategies by capacity. Because Move has no dynamic dispatch, it resolves each strategy by address rather than through an interface."},
+
+  {id:"core",tier:"core",name:"Satay",label:"Core",
+   addr:"0xb10bd32b3979c9d04272c769d9ef52afbc6edc4bf03982a9e326b96ac25e7f2d",
+   mods:["vault","base_strategy","protocol","satay","asset","hot_asset","hot_coin","constants"],
+   desc:"Vault and strategy accounting — share issuance, debt tracking, profit locking, and the wrappers that move value between packages. Holds every unit of user funds."},
+
+  {id:"s-echelon",tier:"strategies",name:"EchelonSimple",label:"Echelon lend",
+   addr:"0x5d2b6a8b6478d86f62c9d3378e2a1fa265e85e69046946632d1fecae1940e851",
+   mods:["strategy"],rel:"b-echelon",
+   desc:"Supplies a single asset into an Echelon lending market and reports profit or loss back to the vault. Draws its allocation as vault debt and issues debt shares against it."},
+  {id:"s-moveposition",tier:"strategies",name:"MovepositionSimple",label:"MovePosition lend",
+   addr:"0xd7c7b27e361434e18d2410fd02f7140a8c10d174c9be0efd5324578d243953bd",
+   mods:["strategy","ticket"],rel:"b-moveposition",
+   desc:"MovePosition lending integration. Carries an extra ticket module for the venue's position accounting, and accepts a per-deposit packet from the router."},
+  {id:"s-layerbank",tier:"strategies",name:"LayerBankSimple",label:"LayerBank lend",
+   addr:"0xad1b34939f164ec6f6c0157da3a30bf9e5d408250978691872a79aa584852b85",
+   mods:["strategy"],rel:"b-layerbank",
+   desc:"LayerBank lending integration. Supplies a single asset into LayerBank's markets and reports returns back to the vault."},
+  {id:"s-meridian",tier:"strategies",name:"MeridianRewards",label:"Meridian rewards",
+   addr:"0x133b23036f4ac78279fd4cc75b798ccfe2d3c002585049d7483230653b924b7d",
+   mods:["strategy"],rel:"b-meridian",
+   desc:"Meridian farming integration, reached through the router's coin-type parameterized deposit path."},
+  {id:"s-placeholder",tier:"strategies",name:"PlaceholderSimple",label:"Placeholder",
+   addr:"0xa9cebc4e3a52f186c831666a6e2f0475d32ebd23244b207ffde0ce06d9813414",
+   mods:["strategy"],rel:"b-placeholder",
+   desc:"Holds funds idle for a vault that has no live strategy yet, so a vault can be deployed before its venue integration exists."},
+
+  {id:"b-echelon",tier:"blocks",name:"EchelonBlock",label:"Echelon",
+   addr:"0x2859e4b5922d5c6746e51387eea923cd8630ecba132e3eafdf6924269b0dc319",
+   mods:["echelon_block"],
+   desc:"Adapter over Echelon's lending module. Unwraps the protocol's transfer type under a registered capability and forwards supply, borrow, and withdraw calls. Holds no accounting of its own."},
+  {id:"b-moveposition",tier:"blocks",name:"MovePositionBlock",label:"MovePosition",
+   addr:"0xf35c3fb25b800e4e25b71e255bd3194812d08a0044b45373c53798280db58dca",
+   mods:["moveposition_block"],
+   desc:"Adapter over MovePosition. Translates protocol calls into the venue's interface."},
+  {id:"b-layerbank",tier:"blocks",name:"LayerBankBlock",label:"LayerBank",
+   addr:"0x61a67557042baa9fd928e874b84ed53b5de73a0f5474fd278e4d73393125d32e",
+   mods:["layerbank_block"],
+   desc:"Adapter over LayerBank's lending markets."},
+  {id:"b-meridian",tier:"blocks",name:"MeridianFarmingBlock",label:"Meridian farming",
+   addr:"0x04d59ca485d294ce6645e456a7ec4ddf1363c844365e4a568ff9211c7e21c8b3",
+   mods:["meridian_farming_block"],
+   desc:"Adapter over Meridian's farming contracts, translating protocol calls into the venue's staking interface."},
+  {id:"b-lbairdrop",tier:"blocks",name:"LayerBankAirdropBlock",label:"LayerBank airdrop",
+   addr:"0xac80083d55f39c8a62eea93d3877b2f5fd40ef469ae54910ff27ff49dd42c8a6",
+   mods:["layerbank_airdrop_block"],
+   desc:"Claims LayerBank airdrop distributions on behalf of a strategy account."},
+  {id:"b-placeholder",tier:"blocks",name:"PlaceholderBlock",label:"Placeholder",
+   addr:"0xf23a6e822ee3605642d7ce720f2dc0f8269c199da94d93136f56089bb005f309",
+   mods:["placeholder_block"],
+   desc:"A no-op adapter paired with the placeholder strategy."},
+
+  {id:"rewards",tier:"rewards",name:"MultiRewardsAptos",label:"Rewards core",
+   addr:"0x113a1769acc5ce21b5ece6f9533eef6dd34c758911fa5235124c87ff1298633b",
+   mods:["multi_rewards","router","token_fa_wrapper"],
+   desc:"Multi-asset staking and reward distribution, supporting several reward tokens against a single staked position."},
+  {id:"r-batcher",tier:"rewards",name:"MultiRewardsBatcher",label:"Batcher",
+   addr:"0x265d62018bb6ec05859cdf5520cfc1efa8e84a4f9a853c66f139a2184d367be4",
+   mods:["batcher_entry","batcher_view"],
+   desc:"Batches reward claims and stake operations into single transactions, with paired view functions for the interface."},
+  {id:"r-std",tier:"rewards",name:"StdBatcher",label:"Std batcher",
+   addr:"0x2a6b1dd5556386991fc6f4fa140ae65a6fc90414acec00e7f0254e98929ec140",
+   mods:["std_views"],
+   desc:"Standard batched view helpers over the rewards system."},
+
+  {id:"helpers",tier:"periphery",name:"CanopyHelpers",label:"Helpers",
+   addr:"0x93c6d4852a37be13ec1487a60d32433e396b048ce634b4e8b9f60ff0dac365d2",
+   mods:["helpers"],
+   desc:"On-chain helper reads that let the SDK collapse many queries into one call."},
+  {id:"views",tier:"periphery",name:"CanopyViews",label:"Views",
+   addr:"0x707462571715301b063d79c2cdb57c3bd1cfe2189889793b00077ceed86e0219",
+   mods:["rewards_view"],
+   desc:"Aggregated view functions over vault and rewards state, backing the application's batched reads."}
+];
+
+const byId = Object.fromEntries(C.map(c => [c.id, c]));
+const stack = document.getElementById("stack");
+const detail = document.getElementById("detail");
+
+TIERS.forEach(t => {
+  const items = C.filter(c => c.tier === t.id);
+  if (!items.length) return;
+  const sec = document.createElement("div");
+  sec.className = "tier";
+  const h = document.createElement("p");
+  h.className = "tier-h";
+  h.innerHTML = `<span>${t.name}</span><span class="ln"></span><span>${items.length}</span>`;
+  sec.appendChild(h);
+  const grid = document.createElement("div");
+  grid.className = "nodes";
+  items.forEach(c => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "node";
+    b.id = "n-" + c.id;
+    b.setAttribute("aria-pressed", "false");
+    b.innerHTML = `<span class="nm">${c.label}</span>`;
+    b.addEventListener("click", () => select(c.id, true));
+    grid.appendChild(b);
+  });
+  sec.appendChild(grid);
+  stack.appendChild(sec);
+});
+
+function esc(s){ return String(s).replace(/[&<>"]/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m])); }
+
+function select(id, push){
+  const c = byId[id];
+  if (!c) return;
+  document.querySelectorAll(".node").forEach(n => {
+    n.setAttribute("aria-pressed", "false");
+    n.classList.remove("rel");
+  });
+  const node = document.getElementById("n-" + id);
+  if (node) node.setAttribute("aria-pressed", "true");
+  if (c.rel) {
+    const r = document.getElementById("n-" + c.rel);
+    if (r) r.classList.add("rel");
+  }
+  C.filter(x => x.rel === id).forEach(x => {
+    const r = document.getElementById("n-" + x.id);
+    if (r) r.classList.add("rel");
+  });
+
+  const mods = c.mods.map(m =>
+    `<a class="mod" href="${EXPLORER}/object/${c.addr}/modules/code/${m}" target="_blank" rel="noopener">
+       <span>${esc(m)}.move</span><span class="arw">↗</span>
+     </a>`).join("");
+
+  detail.innerHTML = `
+    <div class="d-top">
+      <p class="d-kind">${esc(TIERS.find(t => t.id === c.tier).name)}</p>
+      <h3 class="d-name">${esc(c.name)}</h3>
+    </div>
+    <p class="d-desc">${esc(c.desc)}</p>
+    <p class="d-sub">Source — ${c.mods.length} module${c.mods.length > 1 ? "s" : ""}</p>
+    <div class="mods">${mods}</div>
+    <p class="d-sub">Package address</p>
+    <a class="addr" href="${EXPLORER}/account/${c.addr}" target="_blank" rel="noopener">${c.addr}</a>
+    <div class="d-links">
+      <a href="${FULLNODE}/accounts/${c.addr}/resource/0x1::code::PackageRegistry" target="_blank" rel="noopener">Registry resource ↗</a>
+      <a href="${FULLNODE}/accounts/${c.addr}/modules" target="_blank" rel="noopener">Module ABIs ↗</a>
+    </div>`;
+
+  if (push && history.replaceState) history.replaceState(null, "", "#" + id);
+}
+
+const initial = location.hash.replace("#", "");
+select(byId[initial] ? initial : "core", false);
+</script>
+</body>
+</html>
