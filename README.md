@@ -12,13 +12,7 @@ engineering credit belongs to the engineers who wrote it.
 Everything here is written against the deployed on-chain source, so a reader with no access
 to the private repository can check any claim in it.
 
-https://github.com/user-attachments/assets/e2c453c7-72d8-41a9-bbcd-b1eb7faa42c1
-
-<p align="center">
-  Presenting Canopy at <b>Korea Blockchain Week 2025</b> &nbsp;·&nbsp; 1 min
-  &nbsp;&nbsp;|&nbsp;&nbsp;
-  <b><a href="https://bennettdavisv2.github.io/canopy-architecture/">Interactive architecture map →</a></b>
-</p>
+**[▶ Interactive architecture map](https://bennettdavisv2.github.io/canopy-architecture/)**
 
 ---
 
