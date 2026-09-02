@@ -1,0 +1,197 @@
+[
+  {
+    "label": "core",
+    "address": "0xb10bd32b3979c9d04272c769d9ef52afbc6edc4bf03982a9e326b96ac25e7f2d",
+    "package": "Satay",
+    "upgrade_policy": "immutable",
+    "upgrade_number": "0",
+    "modules": [
+      "asset",
+      "constants",
+      "protocol",
+      "hot_asset",
+      "hot_coin",
+      "base_strategy",
+      "vault",
+      "satay"
+    ]
+  },
+  {
+    "label": "router",
+    "address": "0x717b417949cd5bfa6dc02822eacb727d820de2741f6ea90bf16be6c0ed46ff4b",
+    "package": "SatayRouter",
+    "upgrade_policy": "compatible",
+    "upgrade_number": "5",
+    "modules": [
+      "auth",
+      "deposit",
+      "harvest",
+      "withdraw",
+      "router"
+    ]
+  },
+  {
+    "label": "block-echelon",
+    "address": "0x2859e4b5922d5c6746e51387eea923cd8630ecba132e3eafdf6924269b0dc319",
+    "package": "EchelonBlock",
+    "upgrade_policy": "compatible",
+    "upgrade_number": "0",
+    "modules": [
+      "echelon_block"
+    ]
+  },
+  {
+    "label": "block-moveposition",
+    "address": "0xf35c3fb25b800e4e25b71e255bd3194812d08a0044b45373c53798280db58dca",
+    "package": "MovePositionBlock",
+    "upgrade_policy": "compatible",
+    "upgrade_number": "0",
+    "modules": [
+      "moveposition_block"
+    ]
+  },
+  {
+    "label": "block-layerbank",
+    "address": "0x61a67557042baa9fd928e874b84ed53b5de73a0f5474fd278e4d73393125d32e",
+    "package": "LayerBankBlock",
+    "upgrade_policy": "compatible",
+    "upgrade_number": "0",
+    "modules": [
+      "layerbank_block"
+    ]
+  },
+  {
+    "label": "block-placeholder",
+    "address": "0xf23a6e822ee3605642d7ce720f2dc0f8269c199da94d93136f56089bb005f309",
+    "package": "PlaceholderBlock",
+    "upgrade_policy": "compatible",
+    "upgrade_number": "0",
+    "modules": [
+      "placeholder_block"
+    ]
+  },
+  {
+    "label": "block-meridian-farming",
+    "address": "0x04d59ca485d294ce6645e456a7ec4ddf1363c844365e4a568ff9211c7e21c8b3",
+    "package": "MeridianFarmingBlock",
+    "upgrade_policy": "compatible",
+    "upgrade_number": "1",
+    "modules": [
+      "meridian_farming_block"
+    ]
+  },
+  {
+    "label": "block-layerbank-airdrop",
+    "address": "0xac80083d55f39c8a62eea93d3877b2f5fd40ef469ae54910ff27ff49dd42c8a6",
+    "package": "LayerBankAirdropBlock",
+    "upgrade_policy": "compatible",
+    "upgrade_number": "0",
+    "modules": [
+      "layerbank_airdrop_block"
+    ]
+  },
+  {
+    "label": "strategy-echelon-simple",
+    "address": "0x5d2b6a8b6478d86f62c9d3378e2a1fa265e85e69046946632d1fecae1940e851",
+    "package": "EchelonSimple",
+    "upgrade_policy": "compatible",
+    "upgrade_number": "3",
+    "modules": [
+      "strategy"
+    ]
+  },
+  {
+    "label": "strategy-moveposition-simple",
+    "address": "0xd7c7b27e361434e18d2410fd02f7140a8c10d174c9be0efd5324578d243953bd",
+    "package": "MovepositionSimple",
+    "upgrade_policy": "compatible",
+    "upgrade_number": "2",
+    "modules": [
+      "ticket",
+      "strategy"
+    ]
+  },
+  {
+    "label": "strategy-layerbank-simple",
+    "address": "0xad1b34939f164ec6f6c0157da3a30bf9e5d408250978691872a79aa584852b85",
+    "package": "LayerBankSimple",
+    "upgrade_policy": "compatible",
+    "upgrade_number": "5",
+    "modules": [
+      "strategy"
+    ]
+  },
+  {
+    "label": "strategy-placeholder-simple",
+    "address": "0xa9cebc4e3a52f186c831666a6e2f0475d32ebd23244b207ffde0ce06d9813414",
+    "package": "PlaceholderSimple",
+    "upgrade_policy": "compatible",
+    "upgrade_number": "0",
+    "modules": [
+      "strategy"
+    ]
+  },
+  {
+    "label": "strategy-meridian-rewards",
+    "address": "0x133b23036f4ac78279fd4cc75b798ccfe2d3c002585049d7483230653b924b7d",
+    "package": "MeridianRewards",
+    "upgrade_policy": "compatible",
+    "upgrade_number": "0",
+    "modules": [
+      "strategy"
+    ]
+  },
+  {
+    "label": "rewards",
+    "address": "0x113a1769acc5ce21b5ece6f9533eef6dd34c758911fa5235124c87ff1298633b",
+    "package": "MultiRewardsAptos",
+    "upgrade_policy": "immutable",
+    "upgrade_number": "2",
+    "modules": [
+      "multi_rewards",
+      "token_fa_wrapper",
+      "router"
+    ]
+  },
+  {
+    "label": "rewards-batcher",
+    "address": "0x265d62018bb6ec05859cdf5520cfc1efa8e84a4f9a853c66f139a2184d367be4",
+    "package": "MultiRewardsBatcher",
+    "upgrade_policy": "compatible",
+    "upgrade_number": "1",
+    "modules": [
+      "batcher_entry",
+      "batcher_view"
+    ]
+  },
+  {
+    "label": "rewards-std-batcher",
+    "address": "0x2a6b1dd5556386991fc6f4fa140ae65a6fc90414acec00e7f0254e98929ec140",
+    "package": "StdBatcher",
+    "upgrade_policy": "compatible",
+    "upgrade_number": "1",
+    "modules": [
+      "std_views"
+    ]
+  },
+  {
+    "label": "helpers",
+    "address": "0x93c6d4852a37be13ec1487a60d32433e396b048ce634b4e8b9f60ff0dac365d2",
+    "package": "CanopyHelpers",
+    "upgrade_policy": "compatible",
+    "upgrade_number": "1",
+    "modules": [
+      "helpers"
+    ]
+  },
+  {
+    "label": "views",
+    "address": "0x707462571715301b063d79c2cdb57c3bd1cfe2189889793b00077ceed86e0219",
+    "package": "CanopyViews",
+    "upgrade_policy": "compatible",
+    "upgrade_number": "0",
+    "modules": [
+      "rewards_view"
+    ]
+  }
+]
